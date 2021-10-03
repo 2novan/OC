@@ -1,0 +1,21 @@
+<h1>#<%= @game.name %></h1>
+<div id="memes" data-game-id="<%= @game.id %>">
+  <% @game.memes.each do |meme| %>
+    <div class="meme-container" id="meme-<%= meme.id %>">
+      <i class="author">
+        <span><%= meme.user.nickname %></span>
+        <small><%= meme.created_at.strftime("%a %b %e at %l:%M%p") %></small>
+      </i>
+      <p><%= meme.title %></p>
+      <% if meme.image.exist do %> 
+        <%= cl_image_tag meme.image.key, width: 400, height: 300, crop: :fill %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%= simple_form_for [ @game, @meme ], remote: true do |f| %>
+  <%= f.input :title, label: false, placeholder: "Meme ##{@game.name}" %>
+  <%= f.file_field :image %>
+<% end %>
+<% end %>
